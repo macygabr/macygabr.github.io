@@ -38,3 +38,4 @@ out/
 .vscode/
 application.properties
 keystore.p12
+.DS_Store
