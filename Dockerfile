@@ -1,5 +1,5 @@
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 COPY . .
 RUN ./gradlew bootJar
-CMD ["java", "-jar", "build/libs/yourappname.jar"]
+CMD ["java", "-jar", "build/libs/ApiGateWayApplication-0.0.1.jar"]
