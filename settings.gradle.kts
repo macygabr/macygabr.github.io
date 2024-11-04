@@ -1,1 +1,1 @@
-rootProject.name = "ApiGateWayApplication"
+rootProject.name = "AuthorizationServer"
