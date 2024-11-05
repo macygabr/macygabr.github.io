@@ -39,6 +39,6 @@ out/
 .DS_Store
 ### VS Code ###
 .env
-application.properties
+src/main/resources/application.properties
 keystore.p12
 target

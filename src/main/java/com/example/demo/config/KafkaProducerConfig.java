@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
