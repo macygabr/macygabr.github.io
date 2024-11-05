@@ -25,7 +25,7 @@ public class KafkaConsumerConfig {
         configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, dotenv.get("KAFKA_BOOTSTRAP_SERVERS"));
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, dotenv.get("KAFKA_CONSUMER_GROUP_ID")); // можно также вынести в .env
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, dotenv.get("KAFKA_CONSUMER_GROUP_ID"));
         return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
