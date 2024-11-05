@@ -2,7 +2,6 @@ HELP.md
 .gradle
 gradle
 build/*
-!build/lib/ApiGateWayApplication.jar
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -40,3 +39,4 @@ out/
 application.properties
 keystore.p12
 .DS_Store
+target
