@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -16,13 +17,15 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
+    private final Dotenv dotenv = Dotenv.load();
+
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "37.194.168.90:9092");
+        configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, dotenv.get("KAFKA_BOOTSTRAP_SERVERS"));
         configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, "my-group");
+        configProps.put(ConsumerConfig.GROUP_ID_CONFIG, dotenv.get("KAFKA_CONSUMER_GROUP_ID")); // можно также вынести в .env
         return new DefaultKafkaConsumerFactory<>(configProps);
     }
 
