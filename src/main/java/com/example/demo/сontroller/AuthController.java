@@ -1,5 +1,6 @@
 package com.example.demo.сontroller;
 
+import com.example.demo.models.SignInRequest;
 import com.example.demo.service.kafka.KafkaProducerService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +24,8 @@ public class AuthController {
     public ResponseEntity<?> signIn(@RequestBody SignInRequest request) {
         System.out.println("Запрос signin: email=" + request.getEmail() + " password=" + request.getPassword());
         kafkaProducer.sendMessage("auth", request.toString());
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok("send...");
     }
-}
-
-@Data
-class SignInRequest {
-    private String email;
-     private String password;
 }
 
 
