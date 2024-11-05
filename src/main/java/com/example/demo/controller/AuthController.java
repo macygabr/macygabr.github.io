@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.models.SignInRequest;
+import com.example.demo.models.SignUpRequest;
 import com.example.demo.service.authentication.AuthenticationService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +20,25 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(JSONObject request) {
-        System.out.println("signIn: " + request);
-        authenticationService.signIn(request);
-        return ResponseEntity.ok("send...");
+    public ResponseEntity<?> signIn(@RequestBody SignInRequest request) {
+        try {
+            System.out.println("signIn: " + request);
+            authenticationService.signIn(request);
+            return ResponseEntity.ok("send...");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error converting to JSON");
+        }
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(JSONObject request) {
-        System.out.println("signUp: " + request);
-        authenticationService.signUp(request);
-        return ResponseEntity.ok("send...");
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequest request) {
+        try {
+            System.out.println("signUp: " + request);
+            authenticationService.signUp(request);
+            return ResponseEntity.ok("send...");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error converting to JSON");
+        }
     }
 
     @GetMapping("/logout")
