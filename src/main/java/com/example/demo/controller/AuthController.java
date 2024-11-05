@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.models.SignInRequest;
-import com.example.demo.models.SignUpRequest;
+
 import com.example.demo.service.authentication.AuthenticationService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
