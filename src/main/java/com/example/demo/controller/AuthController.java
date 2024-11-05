@@ -19,14 +19,14 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody JSONObject request) {
+    public ResponseEntity<?> signIn(JSONObject request) {
         System.out.println("signIn: " + request);
         authenticationService.signIn(request);
         return ResponseEntity.ok("send...");
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody JSONObject request) {
+    public ResponseEntity<?> signUp(JSONObject request) {
         System.out.println("signUp: " + request);
         authenticationService.signUp(request);
         return ResponseEntity.ok("send...");
