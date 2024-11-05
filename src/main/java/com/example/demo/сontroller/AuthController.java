@@ -2,7 +2,7 @@ package com.example.demo.сontroller;
 
 import com.example.demo.models.SignInRequest;
 import com.example.demo.service.kafka.KafkaProducerService;
-import lombok.Data;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +22,9 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody SignInRequest request) {
-        System.out.println("Запрос signin: email=" + request.getEmail() + " password=" + request.getPassword());
-        kafkaProducer.sendMessage("auth", request.toString());
+        System.out.println("Запрос signin: " + request.toString());
+        JSONObject jsonObject = new JSONObject(request.toString());
+        kafkaProducer.sendMessage("auth", jsonObject.toString());
         return ResponseEntity.ok("send...");
     }
 }
