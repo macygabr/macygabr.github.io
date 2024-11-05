@@ -44,6 +44,7 @@ dependencies {
 	// Other
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
+	implementation("org.json:json:20240303")
 }
 
 
