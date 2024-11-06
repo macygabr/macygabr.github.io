@@ -17,7 +17,7 @@ import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
-import authClient from '../../lib/auth/auth';
+import userClient from '../../lib/user/user';
 import { NotificationsPopover } from '../components/notifications-popover';
 
 // ----------------------------------------------------------------------
@@ -44,7 +44,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userInfo = await authClient.getUserInfo(); 
+        const userInfo = await userClient.getUserInfo();
         setUser(userInfo);
       } catch (error) {
         console.error('Ошибка при загрузке данных пользователя:', error);
