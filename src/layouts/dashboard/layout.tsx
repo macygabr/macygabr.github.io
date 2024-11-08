@@ -18,6 +18,7 @@ import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
 import userClient from '../../lib/user/user';
+import userClient from '../../lib/user/user';
 import { NotificationsPopover } from '../components/notifications-popover';
 
 // ----------------------------------------------------------------------

@@ -3,6 +3,7 @@ import axios from 'axios';
 const apiUrl = import.meta.env.VITE_SERVER_API_URL;
 
 const authClient = {
+
     async signIn(email: string, password: string): Promise<{ success: boolean; error?: string }> {
       try {
         const response = await axios.post(`${apiUrl}/api/auth/signin`, { email, password });
@@ -23,6 +24,6 @@ const authClient = {
       console.log("Выход из системы");
     },
   };
-  
+
   export default authClient;
   
