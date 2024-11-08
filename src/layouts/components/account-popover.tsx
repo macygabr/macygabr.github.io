@@ -15,6 +15,7 @@ import { useRouter, usePathname } from 'src/routes/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import userClient from '../../lib/user/user';
+import userAuth from '../../lib/auth/auth';
 import { UserInfo } from '../../lib/models/userInfo';
 
 // ----------------------------------------------------------------------
@@ -50,6 +51,10 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
     },
     [handleClosePopover, router]
   );
+
+  const handleLogout = () => {
+    userAuth.signOut();
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -147,7 +152,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
             <Divider sx={{ borderStyle: 'dashed' }} />
   
             <Box sx={{ p: 1 }}>
-              <Button fullWidth color="error" size="medium" variant="text">
+              <Button fullWidth color="error" size="medium" variant="text" onClick={handleLogout}>
                 Logout
               </Button>
             </Box>

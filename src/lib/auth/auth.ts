@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { UserInfo } from '../models/userInfo';
 
 const apiUrl = import.meta.env.VITE_SERVER_API_URL;
-
 
 const authClient = {
     async signIn(email: string, password: string): Promise<{ success: boolean; error?: string }> {
