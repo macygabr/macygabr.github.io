@@ -14,7 +14,7 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 import { useRouter, usePathname } from 'src/routes/hooks';
 import { useNavigate } from 'react-router-dom';
 
-import authClient from '../../lib/auth/auth';
+import userClient from '../../lib/user/user';
 import { UserInfo } from '../../lib/models/userInfo';
 
 // ----------------------------------------------------------------------
@@ -54,7 +54,8 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const user = await authClient.getUserInfo(); 
+        const user = await userClient.getUserInfo(); 
+        console.log("User: " + user?.firstname);
         setUser(user);
       } catch (error) {
         console.error('Ошибка при загрузке данных пользователя:', error);
@@ -100,11 +101,11 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
           >
             <Box sx={{ p: 2, pb: 1.5 }}>
               <Typography variant="subtitle2" noWrap>
-                {userInfo.displayName}
+                {userInfo.lastname}
               </Typography>
   
               <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-                {userInfo.email}
+                {userInfo.firstname}
               </Typography>
             </Box>
   

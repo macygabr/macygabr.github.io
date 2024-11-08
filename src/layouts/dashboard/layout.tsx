@@ -17,7 +17,7 @@ import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
-import authClient from '../../lib/auth/auth';
+import userClient from '../../lib/user/user';
 import { NotificationsPopover } from '../components/notifications-popover';
 
 // ----------------------------------------------------------------------
@@ -30,21 +30,26 @@ export type DashboardLayoutProps = {
   };
 };
 
-type User = {
-  username: string;
+export interface UserInfo {
+  firstname: string;
+  lastname: string;
   email: string;
-};
+  photoURL?: string;
+  displayName?: string;
+}
+
+
 
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const [navOpen, setNavOpen] = useState(false);
   const layoutQuery: Breakpoint = 'lg';
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserInfo | null>(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userInfo = await authClient.getUserInfo(); 
+        const userInfo = await userClient.getUserInfo(); 
         setUser(userInfo);
       } catch (error) {
         console.error('Ошибка при загрузке данных пользователя:', error);
@@ -95,7 +100,7 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             rightArea: (
               <Box gap={1} display="flex" alignItems="center">
                 <Searchbar />
-                {/* <NotificationsPopover data={_notifications} /> */}
+                <NotificationsPopover data={[]} />
                 <AccountPopover
                   data={[
                     {

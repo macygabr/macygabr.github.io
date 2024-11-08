@@ -7,7 +7,12 @@ const apiUrl = import.meta.env.VITE_SERVER_API_URL;
 const authClient = {
     async signIn(email: string, password: string): Promise<{ success: boolean; error?: string }> {
       try {
-        await axios.post(`${apiUrl}/api/auth/signin`, { email, password });
+        const response = await axios.post(`${apiUrl}/api/auth/signin`, { email, password });
+        const { token, token_name } = response.data;
+
+        console.log(response.data);
+
+        localStorage.setItem(token_name, token);
         return { success: true };
       } catch (error) {
         console.error("Ошибка входа:", error);
@@ -19,16 +24,6 @@ const authClient = {
 
       console.log("Выход из системы");
     },
-  
-    async getUserInfo(): Promise<UserInfo | null> {
-      try {
-        
-        return null;
-      } catch (error) {
-        console.error("Ошибка при получении данных пользователя:", error);
-        return null;
-      }
-    }
   };
   
   export default authClient;

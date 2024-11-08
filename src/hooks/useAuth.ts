@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import authClient from '../lib/auth/auth';
+import userClient from '../lib/user/user';
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -7,7 +7,7 @@ export function useAuth() {
   useEffect(() => {
     async function checkAuth() {
         try {
-          const user = await authClient.getUserInfo(); 
+          const user = await userClient.getUserInfo(); 
           setIsAuthenticated(!!user); 
         } catch (error) {
           setIsAuthenticated(false);
