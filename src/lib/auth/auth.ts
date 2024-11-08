@@ -20,8 +20,19 @@ const authClient = {
     },
   
     async signOut(): Promise<void> {
+      console.log("Выход из системы...");
 
-      console.log("Выход из системы");
+      const token = localStorage.getItem('authToken');
+      const response = await axios.get(
+        `${apiUrl}/api/user/logout`,
+        {
+          headers: {
+            Authorization: token ? `${token}` : `null`,
+          }
+        }
+      );
+
+      console.log(response.data);
     },
   };
 
