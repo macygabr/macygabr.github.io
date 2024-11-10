@@ -60,7 +60,6 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
     const fetchUserInfo = async () => {
       try {
         const user = await userClient.getUserInfo(); 
-        console.log("User: " + user?.firstname);
         setUser(user);
       } catch (error) {
         console.error('Ошибка при загрузке данных пользователя:', error);
