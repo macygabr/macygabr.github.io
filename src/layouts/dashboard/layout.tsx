@@ -1,10 +1,14 @@
+
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
-import { useState, useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import { useTheme } from '@mui/material/styles';
-
+import { useNavigate } from 'react-router-dom';
+import { _langs, _notifications } from 'src/_mock';
 import { Iconify } from 'src/components/iconify';
 import { Main } from './main';
 import { layoutClasses } from '../classes';
@@ -17,8 +21,11 @@ import { LayoutSection } from '../core/layout-section';
 import { HeaderSection } from '../core/header-section';
 import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
-import userClient from '../../lib/user/user';
 import { NotificationsPopover } from '../components/notifications-popover';
+
+
+import { UserInfo } from '../../lib/models/userInfo';
+import userClient from '../../lib/user/user';
 
 // ----------------------------------------------------------------------
 
@@ -30,21 +37,13 @@ export type DashboardLayoutProps = {
   };
 };
 
-export interface UserInfo {
-  firstname: string;
-  lastname: string;
-  email: string;
-  photoURL?: string;
-  displayName?: string;
-}
-
-
-
 export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) {
   const theme = useTheme();
   const [navOpen, setNavOpen] = useState(false);
   const layoutQuery: Breakpoint = 'lg';
   const [user, setUser] = useState<UserInfo | null>(null);
+  const navigate = useNavigate();
+  
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -99,29 +98,39 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
             ),
             rightArea: (
               <Box gap={1} display="flex" alignItems="center">
-                <Searchbar />
-                <NotificationsPopover data={[]} />
-                <AccountPopover
-                  data={[
-                    {
-                      label: 'Home',
-                      href: '/',
-                      icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
-                    },
-                    {
-                      label: 'Profile',
-                      href: '#',
-                      icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
-                    },
-                    {
-                      label: 'Settings',
-                      href: '#',
-                      icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
-                    },
-                  ]}
-                />
+                {user ? (
+                  <>
+                    <Searchbar />
+                    <LanguagePopover data={_langs} />
+                    <NotificationsPopover data={_notifications} />
+                    <AccountPopover
+                      user={user}
+                      data={[
+                        {
+                          label: 'Home',
+                          href: '/',
+                          icon: <Iconify width={22} icon="solar:home-angle-bold-duotone" />,
+                        },
+                        {
+                          label: 'Profile',
+                          href: '#',
+                          icon: <Iconify width={22} icon="solar:shield-keyhole-bold-duotone" />,
+                        },
+                        {
+                          label: 'Settings',
+                          href: '#',
+                          icon: <Iconify width={22} icon="solar:settings-bold-duotone" />,
+                        },
+                      ]}
+                    />
+                  </>
+                ) : (
+                  <Button variant="contained" color="primary" onClick={() => navigate('/sign-in')}>
+                    Sign In
+                  </Button>
+                )}
               </Box>
-            ),
+            )
           }}
         />
       }

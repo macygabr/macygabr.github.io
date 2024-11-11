@@ -38,7 +38,7 @@ export function Router() {
       element: (
         <DashboardLayout>
           <Suspense fallback={renderFallback}>
-            {/* <Outlet /> */}
+            <Outlet />
           </Suspense>
         </DashboardLayout>
       ),

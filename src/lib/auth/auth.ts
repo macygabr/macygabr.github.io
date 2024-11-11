@@ -31,10 +31,10 @@ const authClient = {
           }
         }
       );
+
       console.log(response.data);
-      localStorage.removeItem('authToken');
-      window.location.href = '/';
     },
   };
 
-export default authClient;
+  export default authClient;
+  
