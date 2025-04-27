@@ -21,16 +21,17 @@ export function SignInView() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState({ email: false, password: false });
 
-  const handleSignIn = useCallback(async () => {
-    setError({ email: false, password: false }); 
-    console.log(`Send... ${email} ${password}`);
-    const response = await authClient.signIn(email, password);
-    if (response.success) {
-      window.location.href = '/';
-    } else {
-      setError({ email: true, password: true }); 
-    }
-  }, [email, password, router]);
+    const handleSignIn = useCallback(async () => {
+        setError({ email: false, password: false });
+        console.log(`Send... ${email} ${password}`);
+        const response = await authClient.signIn(email, password);
+        if (response.success) {
+            window.location.href = '/';
+        } else {
+            setError({ email: true, password: true });
+        }
+    }, [email, password]);
+
 
   const renderForm = (
     <Box display="flex" flexDirection="column" alignItems="flex-end">
