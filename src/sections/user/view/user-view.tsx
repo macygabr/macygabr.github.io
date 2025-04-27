@@ -44,7 +44,7 @@ export function UserView() {
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+  }, [fetchUsers, table.page, table.rowsPerPage]);
 
   const dataFiltered: UserProps[] = applyFilter({
     inputData: users,
