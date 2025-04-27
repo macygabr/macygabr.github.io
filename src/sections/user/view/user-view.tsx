@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
+import { getPeers } from 'src/lib/peers/peers';
 import { _users } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -30,12 +31,29 @@ export function UserView() {
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
+  const [users, setUsers] = useState<UserProps[]>([]);
+  const [totalUsers, setTotalUsers] = useState(0);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      const data = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
+      setUsers(data.content || []);         // предполагаем, что пользователи лежат в data.content
+      setTotalUsers(data.totalElements || 0); // предполагаем, что общее кол-во лежит в data.totalElements
+    } catch (error) {
+      console.error('Ошибка загрузки пользователей:', error);
+    }
+  }, [table.page, table.rowsPerPage]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const dataFiltered: UserProps[] = applyFilter({
-    inputData: _users,
+    inputData: users,
     comparator: getComparator(table.order, table.orderBy),
     filterName,
   });
+
 
   const notFound = !dataFiltered.length && !!filterName;
 
