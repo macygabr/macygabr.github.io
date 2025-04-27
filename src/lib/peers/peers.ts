@@ -13,8 +13,8 @@ export const getPeers = async (page: number, size: number, campusId: string) => 
     try {
         const response = await apiClient.get('/statistics/peers', {
             params: {
-                page: page || 0,
-                size: size || 25,
+                page: 0,
+                size: 1000,
                 campusId: campusId || '46e7d965-21e9-4936-bea9-f5ea0d1fddf2',
             },
         });

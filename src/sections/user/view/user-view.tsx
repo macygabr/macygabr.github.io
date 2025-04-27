@@ -34,9 +34,8 @@ export function UserView() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const data = await getPeers(0*table.page, 1000, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
+      const data = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
       setUsers(data || []);
-      table.rowsPerPage=table.rowsPerPage;
       setTotalUsers(data.length || 0);
     } catch (error) {
       console.error('Ошибка загрузки пользователей:', error);
