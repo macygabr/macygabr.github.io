@@ -16,13 +16,14 @@ import { Iconify } from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export type UserProps = {
-  id: string;
-  name: string;
-  role: string;
+  id: number;
+  login: string;
+  className: string | null;
+  parallelName: string | null;
+  expValue: number;
+  level: number;
+  expToNextLevel: number;
   status: string;
-  company: string;
-  avatarUrl: string;
-  isVerified: boolean;
 };
 
 type UserTableRowProps = {
