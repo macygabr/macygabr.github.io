@@ -16,7 +16,7 @@ import { Iconify } from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export type UserProps = {
-  id: number;
+  id: string;
   login: string;
   avatarUrl: '/assets/images/avatars/avatar_default.jpg'
   className: string | null;
