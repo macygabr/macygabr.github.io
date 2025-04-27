@@ -37,6 +37,7 @@ export function UserView() {
   const fetchUsers = useCallback(async () => {
     try {
       const data = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
+      console.log(data);
       setUsers(data.content || []);         // предполагаем, что пользователи лежат в data.content
       setTotalUsers(data.totalElements || 0); // предполагаем, что общее кол-во лежит в data.totalElements
     } catch (error) {
@@ -58,91 +59,91 @@ export function UserView() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <DashboardContent>
-      <Box display="flex" alignItems="center" mb={5}>
-        <Typography variant="h4" flexGrow={1}>
-          Users
-        </Typography>
-        <Button
-          variant="contained"
-          color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
-        >
-          New user
-        </Button>
-      </Box>
+      <DashboardContent>
+        <Box display="flex" alignItems="center" mb={5}>
+          <Typography variant="h4" flexGrow={1}>
+            Users
+          </Typography>
+          <Button
+              variant="contained"
+              color="inherit"
+              startIcon={<Iconify icon="mingcute:add-line" />}
+          >
+            New user
+          </Button>
+        </Box>
 
-      <Card>
-        <UserTableToolbar
-          numSelected={table.selected.length}
-          filterName={filterName}
-          onFilterName={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setFilterName(event.target.value);
-            table.onResetPage();
-          }}
-        />
+        <Card>
+          <UserTableToolbar
+              numSelected={table.selected.length}
+              filterName={filterName}
+              onFilterName={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setFilterName(event.target.value);
+                table.onResetPage();
+              }}
+          />
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
-              <UserTableHead
-                order={table.order}
-                orderBy={table.orderBy}
-                rowCount={_users.length}
-                numSelected={table.selected.length}
-                onSort={table.onSort}
-                onSelectAllRows={(checked) =>
-                  table.onSelectAllRows(
-                    checked,
-                    _users.map((user) => user.id)
-                  )
-                }
-                headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
-                ]}
-              />
-              <TableBody>
-                {dataFiltered
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row) => (
-                    <UserTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(row.id)}
-                      onSelectRow={() => table.onSelectRow(row.id)}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={68}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, _users.length)}
+          <Scrollbar>
+            <TableContainer sx={{ overflow: 'unset' }}>
+              <Table sx={{ minWidth: 800 }}>
+                <UserTableHead
+                    order={table.order}
+                    orderBy={table.orderBy}
+                    rowCount={users.length}
+                    numSelected={table.selected.length}
+                    onSort={table.onSort}
+                    onSelectAllRows={(checked) =>
+                        table.onSelectAllRows(
+                            checked,
+                            users.map((user) => user.id)
+                        )
+                    }
+                    headLabel={[
+                      { id: 'name', label: 'Name' },
+                      { id: 'company', label: 'Company' },
+                      { id: 'role', label: 'Role' },
+                      { id: 'isVerified', label: 'Verified', align: 'center' },
+                      { id: 'status', label: 'Status' },
+                      { id: '' },
+                    ]}
                 />
+                <TableBody>
+                  {dataFiltered
+                      .slice(
+                          table.page * table.rowsPerPage,
+                          table.page * table.rowsPerPage + table.rowsPerPage
+                      )
+                      .map((row) => (
+                          <UserTableRow
+                              key={row.id}
+                              row={row}
+                              selected={table.selected.includes(row.id)}
+                              onSelectRow={() => table.onSelectRow(row.id)}
+                          />
+                      ))}
 
-                {notFound && <TableNoData searchQuery={filterName} />}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+                  <TableEmptyRows
+                      height={68}
+                      emptyRows={emptyRows(table.page, table.rowsPerPage, totalUsers)}
+                  />
 
-        <TablePagination
-          component="div"
-          page={table.page}
-          count={_users.length}
-          rowsPerPage={table.rowsPerPage}
-          onPageChange={table.onChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={table.onChangeRowsPerPage}
-        />
-      </Card>
-    </DashboardContent>
+                  {notFound && <TableNoData searchQuery={filterName} />}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+
+          <TablePagination
+              component="div"
+              page={table.page}
+              count={totalUsers}
+              rowsPerPage={table.rowsPerPage}
+              onPageChange={table.onChangePage}
+              rowsPerPageOptions={[5, 10, 25]}
+              onRowsPerPageChange={table.onChangeRowsPerPage}
+          />
+        </Card>
+      </DashboardContent>
   );
 }
 
