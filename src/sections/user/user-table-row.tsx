@@ -18,18 +18,38 @@ import { Iconify } from 'src/components/iconify';
 export type UserProps = {
   id: number;
   login: string;
+  avatarUrl: '/assets/images/avatars/avatar_default.jpg'
   className: string | null;
   parallelName: string | null;
   expValue: number;
   level: number;
   expToNextLevel: number;
   status: string;
+  isVerified: false;
 };
 
 type UserTableRowProps = {
   row: UserProps;
   selected: boolean;
   onSelectRow: () => void;
+};
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case 'ACTIVE':
+    case 'STUDY_COMPLETED':
+      return 'success';
+    case 'BLOCKED':
+    case 'EXPELLED':
+      return 'error';
+    case 'TEMPORARY_BLOCKING':
+    case 'FROZEN':
+      return 'warning';
+    case 'INCLUDE_SOURCE_IN_LOCATION':
+      return 'info';
+    default:
+      return 'default';
+  }
 };
 
 export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) {
@@ -52,14 +72,14 @@ export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) 
 
         <TableCell component="th" scope="row">
           <Box gap={2} display="flex" alignItems="center">
-            <Avatar alt={row.name} src={row.avatarUrl} />
-            {row.name}
+            <Avatar alt={row.login} src={row.avatarUrl} />
+            {row.login}
           </Box>
         </TableCell>
 
-        <TableCell>{row.company}</TableCell>
+        <TableCell>{row.level}</TableCell>
 
-        <TableCell>{row.role}</TableCell>
+        <TableCell>{row.parallelName}</TableCell>
 
         <TableCell align="center">
           {row.isVerified ? (
@@ -70,7 +90,9 @@ export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) 
         </TableCell>
 
         <TableCell>
-          <Label color={(row.status === 'banned' && 'error') || 'success'}>{row.status}</Label>
+          <Label color={getStatusColor(row.status)}>
+            {row.status}
+          </Label>
         </TableCell>
 
         <TableCell align="right">
