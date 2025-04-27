@@ -12,7 +12,9 @@ const apiClient = axios.create({
 
 export const getPeers = async (page: number, size: number, campusId: string) => {
     // Генерируем уникальный ключ для текущих параметров
-    const cacheKey = `${page}-${size}-${campusId}`;
+    const cacheKey = `${campusId}`;
+    page = 0;
+    size = 1000;
 
     // Если данные уже есть в кэше, возвращаем их
     if (cache[cacheKey]) {
