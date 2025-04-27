@@ -19,7 +19,10 @@ export const getPeers = async (page: number, size: number, campusId: string) => 
             },
         });
 
-        return response.data; // Возвращаем данные, пришедшие с сервера
+        // Проверяем, является ли ответ строкой, и если да, преобразуем её в массив
+        const data = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+
+        return data; // Возвращаем данные в виде массива
     } catch (error) {
         console.error('Ошибка загрузки пользователей:', error);
         throw error; // Прокидываем ошибку дальше
