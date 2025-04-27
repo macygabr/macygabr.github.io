@@ -26,7 +26,7 @@ import { NotificationsPopover } from '../components/notifications-popover';
 
 import { UserInfo } from '../../lib/models/userInfo';
 import userClient from '../../lib/user/user';
-
+import { getPeers } from 'src/lib/peers/peers';
 // ----------------------------------------------------------------------
 
 export type DashboardLayoutProps = {
@@ -48,8 +48,9 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userInfo = await userClient.getUserInfo(); 
-        setUser(userInfo);
+        const userInfo = await userClient.getUserInfo();
+        await getPeers(0, 1000, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
+          setUser(userInfo);
       } catch (error) {
         console.error('Ошибка при загрузке данных пользователя:', error);
         setUser(null);
