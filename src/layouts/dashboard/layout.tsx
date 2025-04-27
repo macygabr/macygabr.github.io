@@ -2,7 +2,7 @@
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
 import { useEffect, useState } from 'react';
-
+import { getPeers } from 'src/lib/peers/peers';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
@@ -26,7 +26,7 @@ import { NotificationsPopover } from '../components/notifications-popover';
 
 import { UserInfo } from '../../lib/models/userInfo';
 import userClient from '../../lib/user/user';
-import { getPeers } from 'src/lib/peers/peers';
+
 // ----------------------------------------------------------------------
 
 export type DashboardLayoutProps = {
