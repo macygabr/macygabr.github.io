@@ -36,7 +36,7 @@ export function UserView() {
     try {
       const data = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
       setUsers(data || []);
-      setTotalUsers(data.length || 0);
+      setTotalUsers(1000 || 0);
     } catch (error) {
       console.error('Ошибка загрузки пользователей:', error);
     }
@@ -96,7 +96,7 @@ export function UserView() {
                     }
                     headLabel={[
                       { id: 'name', label: 'Login' },
-                      { id: 'company', label: 'Class Name' },
+                      { id: 'company', label: 'Level' },
                       { id: 'role', label: 'Parallel Name' },
                       { id: 'isVerified', label: 'Verified', align: 'center' },
                       { id: 'status', label: 'Status' },
