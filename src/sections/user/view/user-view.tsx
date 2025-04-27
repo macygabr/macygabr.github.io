@@ -91,13 +91,13 @@ export function UserView() {
                     onSelectAllRows={(checked) =>
                         table.onSelectAllRows(
                             checked,
-                            users.map((user) => user.id)
+                            users.map((user) => String(user.id))
                         )
                     }
                     headLabel={[
-                      { id: 'name', label: 'Name' },
-                      { id: 'company', label: 'Company' },
-                      { id: 'role', label: 'Role' },
+                      { id: 'name', label: 'Login' },
+                      { id: 'company', label: 'Class Name' },
+                      { id: 'role', label: 'Parallel Name' },
                       { id: 'isVerified', label: 'Verified', align: 'center' },
                       { id: 'status', label: 'Status' },
                       { id: '' },
@@ -113,8 +113,8 @@ export function UserView() {
                           <UserTableRow
                               key={row.id}
                               row={row}
-                              selected={table.selected.includes(row.id)}
-                              onSelectRow={() => table.onSelectRow(row.id)}
+                              selected={table.selected.includes(String(row.id))}
+                              onSelectRow={() => table.onSelectRow(String(row.id))}
                           />
                       ))}
 
