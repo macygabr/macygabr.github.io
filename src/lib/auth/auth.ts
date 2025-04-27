@@ -8,7 +8,6 @@ const authClient = {
       try {
         const response = await axios.post(`${apiUrl}/auth/sign-in`, { email, password });
         const { token, token_name } = response.data;
-        console.log(apiUrl + "/auth/sign-in" + response.data);
         localStorage.setItem(token_name, token);
         return { success: true };
       } catch (error) {
