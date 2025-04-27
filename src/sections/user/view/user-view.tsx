@@ -36,8 +36,8 @@ export function UserView() {
     try {
       const data = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
       console.log(data);
-      setUsers(data.content || []);         // предполагаем, что пользователи лежат в data.content
-      setTotalUsers(data.totalElements || 0); // предполагаем, что общее кол-во лежит в data.totalElements
+      setUsers(data || []);
+      setTotalUsers(data.length || 0);
     } catch (error) {
       console.error('Ошибка загрузки пользователей:', error);
     }
