@@ -26,7 +26,7 @@ export function SignInView() {
     console.log(`Send... ${email} ${password}`);
     const response = await authClient.signIn(email, password);
     if (response.success) {
-      router.push('/');
+      window.location.href = '/';
     } else {
       setError({ email: true, password: true }); 
     }

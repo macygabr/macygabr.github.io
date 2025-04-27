@@ -6,11 +6,9 @@ const authClient = {
 
     async signIn(email: string, password: string): Promise<{ success: boolean; error?: string }> {
       try {
-        const response = await axios.post(`${apiUrl}/api/auth/signin`, { email, password });
+        const response = await axios.post(`${apiUrl}/auth/sign-in`, { email, password });
         const { token, token_name } = response.data;
-
-        console.log(response.data);
-
+        console.log(apiUrl + "/auth/sign-in" + response.data);
         localStorage.setItem(token_name, token);
         return { success: true };
       } catch (error) {
@@ -24,7 +22,7 @@ const authClient = {
 
       const token = localStorage.getItem('authToken');
       const response = await axios.get(
-        `${apiUrl}/api/user/logout`,
+        `${apiUrl}/auth/logout`,
         {
           headers: {
             Authorization: token ? `${token}` : `null`,
@@ -33,6 +31,28 @@ const authClient = {
       );
 
       console.log(response.data);
+      window.location.href = '/';
+    },
+
+    async hhRegistry(): Promise<void> {
+      console.log("Регистриция в hh.ru...");
+
+      const token = localStorage.getItem('authToken');
+      const response = await axios.get(
+        `${apiUrl}/hh/registry`,
+        {
+          headers: {
+            Authorization: token ? `${token}` : `null`,
+          }
+        }
+      );
+
+      console.log(response.data);
+      if(response.data.status === 'OK') {
+        window.location.href = response.data.message;
+      } else {
+        console.error(response.data.message);
+      }
     },
   };
 
