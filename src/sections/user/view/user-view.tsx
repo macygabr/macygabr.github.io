@@ -7,8 +7,9 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import { getPeers } from 'src/lib/peers/peers';
+import { loadAllPeers, getPeers } from 'src/lib/peers/peers';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
@@ -31,14 +32,19 @@ export function UserView() {
   const [filterName, setFilterName] = useState('');
   const [users, setUsers] = useState<UserProps[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchUsers = useCallback(async () => {
     try {
-      const data = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
-      setUsers(data || []);
-      setTotalUsers(data.length || 0);
+      setIsLoading(true);
+      const response = await getPeers(table.page, table.rowsPerPage, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
+      setUsers(response.users || []);
+      setTotalUsers(response.total || 0);
+      console.log(response);
     } catch (error) {
       console.error('Ошибка загрузки пользователей:', error);
+    } finally {
+      setIsLoading(false);
     }
   }, [table.page, table.rowsPerPage]);
 
@@ -81,51 +87,47 @@ export function UserView() {
 
           <Scrollbar>
             <TableContainer sx={{ overflow: 'unset' }}>
-              <Table sx={{ minWidth: 800 }}>
-                <UserTableHead
-                    order={table.order}
-                    orderBy={table.orderBy}
-                    rowCount={users.length}
-                    numSelected={table.selected.length}
-                    onSort={table.onSort}
-                    onSelectAllRows={(checked) =>
-                        table.onSelectAllRows(
-                            checked,
-                            users.map((user) => String(user.id))
-                        )
-                    }
-                    headLabel={[
-                      { id: 'name', label: 'Login' },
-                      { id: 'company', label: 'Level' },
-                      { id: 'role', label: 'Parallel Name' },
-                      { id: 'isVerified', label: 'Verified', align: 'center' },
-                      { id: 'status', label: 'Status' },
-                      { id: '' },
-                    ]}
-                />
-                <TableBody>
-                  {dataFiltered
-                      .slice(
-                          table.page * table.rowsPerPage,
-                          table.page * table.rowsPerPage + table.rowsPerPage
-                      )
-                      .map((row) => (
-                          <UserTableRow
-                              key={row.id}
-                              row={row}
-                              selected={table.selected.includes(String(row.id))}
-                              onSelectRow={() => table.onSelectRow(String(row.id))}
-                          />
-                      ))}
-
-                  <TableEmptyRows
-                      height={68}
-                      emptyRows={emptyRows(table.page, table.rowsPerPage, totalUsers)}
+              {isLoading ? (
+                <Box display="flex" justifyContent="center" alignItems="center" p={3}>
+                  <CircularProgress />
+                </Box>
+              ) : (
+                <Table sx={{ minWidth: 800 }}>
+                  <UserTableHead
+                      order={table.order}
+                      orderBy={table.orderBy}
+                      rowCount={users.length}
+                      numSelected={table.selected.length}
+                      onSort={table.onSort}
+                      onSelectAllRows={(checked) =>
+                          table.onSelectAllRows(
+                              checked,
+                              users.map((user) => String(user.id))
+                          )
+                      }
+                      headLabel={[
+                        { id: 'name', label: 'Login' },
+                        { id: 'company', label: 'Level' },
+                        { id: 'role', label: 'Parallel Name' },
+                        { id: 'isVerified', label: 'Verified', align: 'center' },
+                        { id: 'status', label: 'Status' },
+                        { id: '' },
+                      ]}
                   />
+                  <TableBody>
+                    {dataFiltered.map((row) => (
+                        <UserTableRow
+                            key={row.id}
+                            row={row}
+                            selected={table.selected.includes(String(row.id))}
+                            onSelectRow={() => table.onSelectRow(String(row.id))}
+                        />
+                    ))}
 
-                  {notFound && <TableNoData searchQuery={filterName} />}
-                </TableBody>
-              </Table>
+                    {notFound && <TableNoData searchQuery={filterName} />}
+                  </TableBody>
+                </Table>
+              )}
             </TableContainer>
           </Scrollbar>
 
@@ -148,7 +150,7 @@ export function UserView() {
 export function useTable() {
   const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState('name');
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [selected, setSelected] = useState<string[]>([]);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 

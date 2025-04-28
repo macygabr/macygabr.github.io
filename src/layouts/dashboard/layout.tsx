@@ -1,8 +1,6 @@
-
 import type { Theme, SxProps, Breakpoint } from '@mui/material/styles';
 
 import { useEffect, useState } from 'react';
-import { getPeers } from 'src/lib/peers/peers';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
@@ -23,7 +21,6 @@ import { AccountPopover } from '../components/account-popover';
 import { LanguagePopover } from '../components/language-popover';
 import { NotificationsPopover } from '../components/notifications-popover';
 
-
 import { UserInfo } from '../../lib/models/userInfo';
 import userClient from '../../lib/user/user';
 
@@ -43,21 +40,39 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
   const layoutQuery: Breakpoint = 'lg';
   const [user, setUser] = useState<UserInfo | null>(null);
   const navigate = useNavigate();
-  
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const initializeData = async () => {
       try {
-        const userInfo = await userClient.getUserInfo();
-        await getPeers(0, 1000, '46e7d965-21e9-4936-bea9-f5ea0d1fddf2');
+        setIsLoading(true);
+        setError(null);
+        
+        // Try to load user info
+        try {
+          const userInfo = await userClient.getUserInfo();
           setUser(userInfo);
-      } catch (error) {
-        console.error('Ошибка при загрузке данных пользователя:', error);
-        setUser(null);
+        } catch (userError) {
+          console.error('Ошибка при загрузке данных пользователя:', userError);
+          setError('Не удалось загрузить данные пользователя');
+        }
+        
+      } finally {
+        setIsLoading(false);
       }
     };
-    fetchUserInfo();
+
+    initializeData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Iconify icon="eos-icons:loading" width={48} height={48} />
+      </Box>
+    );
+  }
 
   return (
     <LayoutSection
@@ -75,11 +90,11 @@ export function DashboardLayout({ sx, children, header }: DashboardLayoutProps) 
           }}
           sx={header?.sx}
           slots={{
-            topArea: (
-              <Alert severity="info" sx={{ display: 'none', borderRadius: 0 }}>
-                This is an info Alert.
+            topArea: error ? (
+              <Alert severity="error" sx={{ borderRadius: 0 }}>
+                {error}
               </Alert>
-            ),
+            ) : null,
             leftArea: (
               <>
                 <MenuButton
