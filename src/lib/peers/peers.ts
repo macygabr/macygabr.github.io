@@ -28,11 +28,8 @@ export const loadAllPeers = async (campusId: string): Promise<any[]> => {
             getPeersPage(index, pageSize, campusId)
         );
         
-        // // Загружаем все страницы параллельно
         const allPages = await Promise.all(pagePromises);
-        
-        // // Объединяем все пиры в один массив
-        const allPeers = allPages.flat();
+        const allPeers = allPages.flatMap(p => p.peers);
         
         // Сохраняем все пиры в кэш
         cache[ALL_PEERS_CACHE_KEY] = allPeers;
