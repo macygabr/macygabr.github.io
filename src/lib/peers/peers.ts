@@ -16,7 +16,7 @@ export const loadAllPeers = async (campusId: string): Promise<any[]> => {
     try {
         // Сначала получаем первую страницу, чтобы узнать общее количество пиров
         const firstPage = await getPeersPage(0, 25, campusId);
-        if (!firstPage || firstPage.length === 0) return [];
+        if (!firstPage || !firstPage.peers || firstPage.peers.length === 0) return [];
         cache[ALL_PEERS_CACHE_KEY] = firstPage;
         
         const totalPeers = 20000;
